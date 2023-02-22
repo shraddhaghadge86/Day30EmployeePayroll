@@ -1,0 +1,145 @@
+//UC2
+//create a employee payroll table in the payroll service 
+database to manage employee payrolls
+
+mysql> use payroll_service
+Database changed
+
+mysql> create table employee_payroll(
+    -> Id int AUTO_INCREMENT,
+    -> name varChar(255),
+    -> salary int,
+    -> start_date date,
+    -> PRIMARY KEY (Id)
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+
+mysql> show tables;
++---------------------------+
+| Tables_in_payroll_service |
++---------------------------+
+| employee_payroll          |
++---------------------------+
+1 row in set (0.03 sec)
+
+mysql> desc employee_payroll;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra
+|
++------------+--------------+------+-----+---------+----------------+
+| Id         | int          | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(255) | YES  |     | NULL    |
+|
+| salary     | int          | YES  |     | NULL    |
+|
+| start_date | date         | YES  |     | NULL    |
+|
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+***********************************************************************
+
+//UC3
+//Ability to create employee payroll data
+in the payroll service
+
+mysql> insert into employee_payroll(name,salary,start_date)values
+    -> ('Hansen', '30000', '2020-08-09'),
+    -> ('Svendson', '25000', '2022-05-03'),
+    -> ('victor', '50000', '2021-02-10');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select *from employee_payroll;
++----+----------+--------+------------+
+| Id | name     | salary | start_date |
++----+----------+--------+------------+
+|  1 | Hansen   |  30000 | 2020-08-09 |
+|  2 | Svendson |  25000 | 2022-05-03 |
+|  3 | victor   |  50000 | 2021-02-10 |
++----+----------+--------+------------+
+3 rows in set (0.00 sec)
+
+**********************************************************************
+
+//UC-4 Ability to retrieve all the employee payroll data that is
+added to payroll service database
+
+mysql> select *from employee_payroll;
++----+----------+--------+------------+
+| Id | name     | salary | start_date |
++----+----------+--------+------------+
+|  1 | Hansen   |  30000 | 2020-08-09 |
+|  2 | Svendson |  25000 | 2022-05-03 |
+|  3 | victor   |  50000 | 2021-02-10 |
++----+----------+--------+------------+
+3 rows in set (0.00 sec)
+
+**********************************************************************
+
+//UC-5
+//Ability to retrieve salary data for a particular employee as well as all employees who have
+joined in a particular data range from the payroll service database
+
+mysql> select * from employee_payroll where name = 'victor';
++----+--------+--------+------------+
+| Id | name   | salary | start_date |
++----+--------+--------+------------+
+|  3 | victor |  50000 | 2021-02-10 |
++----+--------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee_payroll where start_date between cast('2022-01-01' as DATE) and DATE(NOW());
++----+----------+--------+------------+
+| Id | name     | salary | start_date |
++----+----------+--------+------------+
+|  2 | Svendson |  25000 | 2022-05-03 |
++----+----------+--------+------------+
+
+
+**********************************************************************
+
+//UC-6
+//Ability to add Gender to Employee Payroll Table and Update the Rows to
+reflect the correct Employee Gender
+
+mysql> insert into Employee_Payroll(name,salary,start_date)values
+    -> ('Paras', '45000', '2023-01-03');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Employee_Payroll(name,salary,start_date)values
+    -> ('Maria', '50000', '2023-01-30');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee_payroll;
++----+----------+--------+--------+------------+
+| Id | name     | gender | salary | start_date |
++----+----------+--------+--------+------------+
+|  1 | Hansen   | NULL   |  30000 | 2020-08-09 |
+|  2 | Svendson | NULL   |  25000 | 2022-05-03 |
+|  3 | victor   | NULL   |  50000 | 2021-02-10 |
+|  4 | Paras    | NULL   |  45000 | 2023-01-03 |
+|  5 | Maria    | NULL   |  50000 | 2023-01-30 |
++----+----------+--------+--------+------------+
+
+mysql> update Employee_Payroll set gender = 'Male' where name = 'Hansen' or name = 'Svendson' or name = 'Paras' or name = 'victor';
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> update Employee_payroll set gender = 'Female' where name = 'Maria';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+----------+--------+--------+------------+
+| Id | name     | gender | salary | start_date |
++----+----------+--------+--------+------------+
+|  1 | Hansen   | Male   |  30000 | 2020-08-09 |
+|  2 | Svendson | Male   |  25000 | 2022-05-03 |
+|  3 | victor   | Male   |  50000 | 2021-02-10 |
+|  4 | Paras    | Male   |  45000 | 2023-01-03 |
+|  5 | Maria    | Female |  50000 | 2023-01-30 |
++----+----------+--------+--------+------------+
+5 rows in set (0.00 sec)
+
